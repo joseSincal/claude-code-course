@@ -1,13 +1,11 @@
 // Course types
 export interface Course {
   id: number;
-  name: string;
-  description: string;
+  title: string;
+  teacher: string;
+  duration: number;
   thumbnail: string;
   slug: string;
-  // Campos opcionales de rating
-  average_rating?: number; // 0.0 - 5.0
-  total_ratings?: number; // Cantidad de ratings
 }
 
 // Class types

@@ -9,7 +9,7 @@ async function getCourses(): Promise<Course[]> {
     throw new Error("Failed to fetch courses");
   }
   const data = await res.json();
-  return data;
+  return data.data;
 }
 
 export default async function Home() {
@@ -33,11 +33,10 @@ export default async function Home() {
             <Link href={`/course/${course.slug}`} key={course.id}>
               <CourseComponent
                 id={course.id}
-                name={course.name}
-                description={course.description}
+                title={course.title}
+                teacher={course.teacher}
+                duration={course.duration}
                 thumbnail={course.thumbnail}
-                average_rating={course.average_rating}
-                total_ratings={course.total_ratings}
               />
             </Link>
           ))}

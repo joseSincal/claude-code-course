@@ -1,7 +1,10 @@
-# Curso de Claude Code de Platzi
-## Profe
+# Curso de Cursor IDE por Platzi
 
-- Eduardo Alvarez
+## Profes
+
+- Eduardo Alvares
+- Thiago Moreno
+- Hélber Fabián Toro
 
 ## Distribución del carpetas
 
