@@ -1,0 +1,41 @@
+[     668ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3002/:0
+[     809ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/_next/static/chunks/node_modules_react-dom_82bb97c6._.js:14111
+[     814ms] TypeError: Cannot read properties of null (reading 'useReducer')
+    at process.env.NODE_ENV.exports.useReducer (file://C:\Users\jguitzol\Documents\claude-code-course\frontend\node_modules\react\cjs\react.development.js:1215:33)
+    at useErrorOverlayReducer (file://C:\Users\jguitzol\Documents\claude-code-course\frontend\node_modules\next\dist\client\components\react-dev-overlay\shared.js:142:34)
+    at usePagesDevOverlay (file://C:\Users\jguitzol\Documents\claude-code-course\frontend\node_modules\next\dist\client\components\react-dev-overlay\pages\hooks.js:18:66)
+    at PagesDevOverlay (file://C:\Users\jguitzol\Documents\claude-code-course\frontend\node_modules\next\dist\client\components\react-dev-overlay\pages\pages-dev-overlay.js:19:71)
+    at ReactDevOverlay (file://C:\Users\jguitzol\Documents\claude-code-course\frontend\node_modules\next\dist\server\dev\next-dev-server.js:103:12)
+    at react-stack-bottom-frame (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:9251:18)
+    at renderWithHooks (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:4898:19)
+    at renderElement (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:5333:23)
+    at retryNode (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:6092:31)
+    at renderNodeDestructive (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:6042:11)
+    at renderNode (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:6499:18)
+    at renderElement (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:5459:18)
+    at retryNode (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:6092:31)
+    at renderNodeDestructive (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:6042:11)
+    at finishFunctionComponent (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:4942:13)
+    at renderElement (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:5384:11)
+    at retryNode (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:6092:31)
+    at performWork (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:6936:17)
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14)
+    at <unknown> (file://C:\Users\jguitzol\Documents\claude-code-course\Frontend\node_modules\react-dom\cjs\react-dom-server.edge.development.js:7696:35)
+    at <unknown> (node:internal/process/task_queues:151:7)
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:148:8)
+[     817ms] [LOG] [HMR] connected @ http://localhost:3002/_next/static/chunks/%5Broot-of-the-server%5D__e2c08166._.js:11471
+[     818ms] [LOG] [Fast Refresh] done in NaNms @ http://localhost:3002/_next/static/chunks/%5Broot-of-the-server%5D__e2c08166._.js:11750
+[    3874ms] [WARNING] The resource http://localhost:3002/_next/static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3002/:0
+[    3874ms] [WARNING] The resource http://localhost:3002/_next/static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.1a6fa3e1.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3002/:0
+[  324813ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3002/_next/static/chunks/%5Broot-of-the-server%5D__e2c08166._.js:11886
+[  326466ms] [LOG] [HMR] connected @ http://localhost:3002/_next/static/chunks/%5Broot-of-the-server%5D__e2c08166._.js:11471
+[  328988ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:16383
+[  329367ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://via.placeholder.com/300x200?text=React+Course:0
+[  329367ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://via.placeholder.com/300x200?text=Python+Course:0
+[  329367ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://via.placeholder.com/300x200?text=JavaScript+Course:0
+[  330033ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_client_8f19e6fb._.js:14983
+[  330270ms] [LOG] [Fast Refresh] done in 234ms @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_client_8f19e6fb._.js:14847
+[  330686ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://via.placeholder.com/300x200?text=React+Course:0
+[  330686ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://via.placeholder.com/300x200?text=Python+Course:0
+[  330709ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://via.placeholder.com/300x200?text=JavaScript+Course:0

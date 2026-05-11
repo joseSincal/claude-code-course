@@ -3,13 +3,32 @@ import { Course } from "@/types";
 import { Course as CourseComponent } from "@/components/Course/Course";
 import Link from "next/link";
 
+interface ApiCourse {
+  id: number;
+  name: string;
+  description: string;
+  thumbnail: string;
+  slug: string;
+  average_rating: number;
+  total_ratings: number;
+}
+
 async function getCourses(): Promise<Course[]> {
   const res = await fetch("http://localhost:8000/courses", { cache: "no-store" });
   if (!res.ok) {
     throw new Error("Failed to fetch courses");
   }
-  const data = await res.json();
-  return data.data;
+  const data: ApiCourse[] = await res.json();
+  return data.map((item) => ({
+    id: item.id,
+    title: item.name,
+    teacher: "",
+    duration: 0,
+    thumbnail: item.thumbnail,
+    slug: item.slug,
+    average_rating: item.average_rating,
+    total_ratings: item.total_ratings,
+  }));
 }
 
 export default async function Home() {
@@ -37,6 +56,9 @@ export default async function Home() {
                 teacher={course.teacher}
                 duration={course.duration}
                 thumbnail={course.thumbnail}
+                slug={course.slug}
+                average_rating={course.average_rating}
+                total_ratings={course.total_ratings}
               />
             </Link>
           ))}

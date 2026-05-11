@@ -4,14 +4,12 @@ from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.db.base import engine, get_db
 from app.services.course_service import CourseService
+from app.schemas.rating import RatingCreate, RatingResponse, UserRatingResponse
 
 app = FastAPI(title=settings.project_name, version=settings.version)
 
 
 def get_course_service(db: Session = Depends(get_db)) -> CourseService:
-    """
-    Dependency to get CourseService instance
-    """
     return CourseService(db)
 
 
@@ -22,11 +20,6 @@ def root() -> dict[str, str]:
 
 @app.get("/health")
 def health() -> dict[str, str | bool | int]:
-    """
-    Health check endpoint that verifies:
-    - Service status
-    - Database connectivity
-    """
     health_status = {
         "status": "ok",
         "service": settings.project_name,
@@ -34,16 +27,13 @@ def health() -> dict[str, str | bool | int]:
         "database": False,
     }
 
-    # Check database connectivity and verify migration
     try:
         with engine.connect() as connection:
-            # Execute COUNT on courses table to verify migration was executed
             result = connection.execute(text("SELECT COUNT(*) FROM courses"))
             row = result.fetchone()
             if row:
-                count = row[0]
                 health_status["database"] = True
-                health_status["courses_count"] = count
+                health_status["courses_count"] = row[0]
             else:
                 health_status["database"] = True
                 health_status["courses_count"] = 0
@@ -56,22 +46,41 @@ def health() -> dict[str, str | bool | int]:
 
 @app.get("/courses")
 def get_courses(course_service: CourseService = Depends(get_course_service)) -> list:
-    """
-    Get all courses.
-    Returns a list of courses with basic information: id, name, description, thumbnail, slug
-    """
     return course_service.get_all_courses()
 
 
 @app.get("/courses/{slug}")
 def get_course_by_slug(slug: str, course_service: CourseService = Depends(get_course_service)) -> dict:
-    """
-    Get course details by slug.
-    Returns course information including teachers and classes.
-    """
     course = course_service.get_course_by_slug(slug)
-    
+
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
-    
+
     return course
+
+
+@app.post("/courses/{slug}/ratings", response_model=RatingResponse)
+def upsert_rating(
+    slug: str,
+    body: RatingCreate,
+    course_service: CourseService = Depends(get_course_service),
+) -> RatingResponse:
+    return course_service.upsert_rating(slug, body.user_id, body.rating)
+
+
+@app.get("/courses/{slug}/ratings/me", response_model=UserRatingResponse)
+def get_user_rating(
+    slug: str,
+    user_id: str,
+    course_service: CourseService = Depends(get_course_service),
+) -> UserRatingResponse:
+    rating = course_service.get_user_rating(slug, user_id)
+
+    if rating is None:
+        raise HTTPException(status_code=404, detail="Rating not found")
+
+    return UserRatingResponse(
+        course_id=rating.course_id,
+        user_id=rating.user_id,
+        rating=rating.rating,
+    )

@@ -6,6 +6,8 @@ export interface Course {
   duration: number;
   thumbnail: string;
   slug: string;
+  average_rating?: number;
+  total_ratings?: number;
 }
 
 // Class types

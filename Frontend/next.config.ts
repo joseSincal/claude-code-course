@@ -4,9 +4,15 @@ import path from "path";
 const nextConfig: NextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, "src/styles")],
-    prependData: `@import "vars.scss";`
+    additionalData: `@use "vars" as *;`
   },
-  /* config options here */
+  webpack: (config) => {
+    // On Windows, process.cwd() returns 'frontend' (lowercase) while fs.realpath()
+    // returns 'Frontend' (the real filesystem name), causing webpack to load the same
+    // module files twice under different IDs, which breaks React context.
+    config.resolve.symlinks = false;
+    return config;
+  },
 };
 
 export default nextConfig;

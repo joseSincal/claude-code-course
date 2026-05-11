@@ -4,7 +4,13 @@
       "Bash(docker-compose build *)",
       "Bash(docker-compose up *)",
       "Bash(docker-compose ps *)",
-      "Bash(curl -s http://localhost:8000/courses)"
+      "PowerShell(docker-compose *)",
+      "Bash(docker-compose exec *)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_snapshot",
+      "mcp__ide__getDiagnostics",
+      "mcp__playwright__browser_network_requests"
     ]
   }
 }

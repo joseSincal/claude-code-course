@@ -10,6 +10,7 @@ describe("Course Component", () => {
     teacher: "John Doe",
     duration: 120,
     thumbnail: "https://example.com/thumbnail.jpg",
+    slug: "react-fundamentals",
   };
 
   it("renders course information correctly", () => {

@@ -12,15 +12,19 @@ MOCK_COURSES_LIST = [
         "name": "Curso de React",
         "description": "Aprende React desde cero",
         "thumbnail": "https://via.placeholder.com/150",
-        "slug": "curso-de-react"
+        "slug": "curso-de-react",
+        "average_rating": 4.5,
+        "total_ratings": 10,
     },
     {
         "id": 2,
         "name": "Curso de Python",
         "description": "Domina Python paso a paso",
         "thumbnail": "https://via.placeholder.com/200",
-        "slug": "curso-de-python"
-    }
+        "slug": "curso-de-python",
+        "average_rating": 0.0,
+        "total_ratings": 0,
+    },
 ]
 
 MOCK_COURSE_DETAIL = {
@@ -30,20 +34,22 @@ MOCK_COURSE_DETAIL = {
     "thumbnail": "https://via.placeholder.com/150",
     "slug": "curso-de-react",
     "teacher_id": [1, 2],
+    "average_rating": 4.5,
+    "total_ratings": 10,
     "classes": [
         {
             "id": 1,
             "name": "Introducción a React",
             "description": "Conceptos básicos de React",
-            "slug": "introduccion-a-react"
+            "slug": "introduccion-a-react",
         },
         {
             "id": 2,
             "name": "Componentes en React",
             "description": "Aprende a crear componentes",
-            "slug": "componentes-en-react"
-        }
-    ]
+            "slug": "componentes-en-react",
+        },
+    ],
 }
 
 
@@ -122,20 +128,22 @@ class TestCoursesEndpoints:
         assert isinstance(data, list)
         assert len(data) == 2
         
-        # Verify each course has required fields according to contract
         for course in data:
             assert "id" in course
             assert "name" in course
             assert "description" in course
             assert "thumbnail" in course
             assert "slug" in course
-            
-            # Verify field types
+            assert "average_rating" in course
+            assert "total_ratings" in course
+
             assert isinstance(course["id"], int)
             assert isinstance(course["name"], str)
             assert isinstance(course["description"], str)
             assert isinstance(course["thumbnail"], str)
             assert isinstance(course["slug"], str)
+            assert isinstance(course["average_rating"], float)
+            assert isinstance(course["total_ratings"], int)
         
         # Verify mock was called
         mock_course_service.get_all_courses.assert_called_once()
@@ -161,7 +169,6 @@ class TestCoursesEndpoints:
         
         data = response.json()
         
-        # Verify required fields according to contract
         assert "id" in data
         assert "name" in data
         assert "description" in data
@@ -169,8 +176,9 @@ class TestCoursesEndpoints:
         assert "slug" in data
         assert "teacher_id" in data
         assert "classes" in data
-        
-        # Verify field types
+        assert "average_rating" in data
+        assert "total_ratings" in data
+
         assert isinstance(data["id"], int)
         assert isinstance(data["name"], str)
         assert isinstance(data["description"], str)
@@ -178,6 +186,8 @@ class TestCoursesEndpoints:
         assert isinstance(data["slug"], str)
         assert isinstance(data["teacher_id"], list)
         assert isinstance(data["classes"], list)
+        assert isinstance(data["average_rating"], float)
+        assert isinstance(data["total_ratings"], int)
         
         # Verify teacher_id contains integers
         for teacher_id in data["teacher_id"]:
@@ -229,10 +239,9 @@ class TestContractCompliance:
         response = client.get("/courses")
         data = response.json()
         
-        expected_fields = {"id", "name", "description", "thumbnail", "slug"}
-        
+        expected_fields = {"id", "name", "description", "thumbnail", "slug", "average_rating", "total_ratings"}
+
         for course in data:
-            # Verify no extra fields beyond contract
             actual_fields = set(course.keys())
             assert actual_fields == expected_fields, f"Expected {expected_fields}, got {actual_fields}"
     
@@ -243,8 +252,7 @@ class TestContractCompliance:
         response = client.get("/courses/curso-de-react")
         data = response.json()
         
-        # Verify main course fields
-        expected_course_fields = {"id", "name", "description", "thumbnail", "slug", "teacher_id", "classes"}
+        expected_course_fields = {"id", "name", "description", "thumbnail", "slug", "teacher_id", "classes", "average_rating", "total_ratings"}
         actual_course_fields = set(data.keys())
         assert actual_course_fields == expected_course_fields
         
@@ -262,7 +270,9 @@ class TestContractCompliance:
                 "name": "Curso de React",
                 "description": "Curso de React",
                 "thumbnail": "https://via.placeholder.com/150",
-                "slug": "curso-de-react"
+                "slug": "curso-de-react",
+                "average_rating": 0.0,
+                "total_ratings": 0,
             }
         ]
         
@@ -276,4 +286,94 @@ class TestContractCompliance:
         assert course["name"] == "Curso de React"
         assert course["description"] == "Curso de React"
         assert course["thumbnail"] == "https://via.placeholder.com/150"
-        assert course["slug"] == "curso-de-react" 
+        assert course["slug"] == "curso-de-react"
+
+
+MOCK_RATING_RESPONSE = {
+    "course_id": 1,
+    "user_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "rating": 4,
+    "average_rating": 4.0,
+    "total_ratings": 1,
+}
+
+MOCK_USER_RATING_RESPONSE = {
+    "course_id": 1,
+    "user_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "rating": 4,
+}
+
+VALID_RATING_BODY = {
+    "user_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "rating": 4,
+}
+
+
+class TestRatingEndpoints:
+
+    def test_post_rating_success(self, client, mock_course_service):
+        mock_course_service.upsert_rating.return_value = MOCK_RATING_RESPONSE
+
+        response = client.post("/courses/curso-de-react/ratings", json=VALID_RATING_BODY)
+        assert response.status_code == 200
+
+        data = response.json()
+        assert data["course_id"] == 1
+        assert data["user_id"] == VALID_RATING_BODY["user_id"]
+        assert data["rating"] == VALID_RATING_BODY["rating"]
+        assert "average_rating" in data
+        assert "total_ratings" in data
+
+        mock_course_service.upsert_rating.assert_called_once_with(
+            "curso-de-react", VALID_RATING_BODY["user_id"], VALID_RATING_BODY["rating"]
+        )
+
+    def test_post_rating_course_not_found(self, client, mock_course_service):
+        from fastapi import HTTPException
+        mock_course_service.upsert_rating.side_effect = HTTPException(status_code=404, detail="Course not found")
+
+        response = client.post("/courses/nonexistent/ratings", json=VALID_RATING_BODY)
+        assert response.status_code == 404
+        assert response.json() == {"detail": "Course not found"}
+
+    def test_post_rating_invalid_rating_value(self, client, mock_course_service):
+        response = client.post(
+            "/courses/curso-de-react/ratings",
+            json={"user_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "rating": 6},
+        )
+        assert response.status_code == 422
+
+
+class TestUserRatingEndpoint:
+
+    def test_get_user_rating_success(self, client, mock_course_service):
+        mock_course_service.get_user_rating.return_value = Mock(
+            course_id=1,
+            user_id="a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            rating=4,
+        )
+
+        response = client.get(
+            "/courses/curso-de-react/ratings/me",
+            params={"user_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"},
+        )
+        assert response.status_code == 200
+
+        data = response.json()
+        assert data["course_id"] == 1
+        assert data["user_id"] == "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+        assert data["rating"] == 4
+
+    def test_get_user_rating_not_found(self, client, mock_course_service):
+        mock_course_service.get_user_rating.return_value = None
+
+        response = client.get(
+            "/courses/curso-de-react/ratings/me",
+            params={"user_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"},
+        )
+        assert response.status_code == 404
+        assert response.json() == {"detail": "Rating not found"}
+
+    def test_get_user_rating_missing_user_id(self, client, mock_course_service):
+        response = client.get("/courses/curso-de-react/ratings/me")
+        assert response.status_code == 422

@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 0.05rem;
+}
+
+.starWrapper {
+  position: relative;
+  display: inline-flex;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: default;
+
+  &[role="button"] {
+    cursor: pointer;
+  }
+}
+
+.starEmpty {
+  color: color('light-gray');
+}
+
+.starFilled {
+  position: absolute;
+  inset: 0;
+  color: color('primary');
+  overflow: hidden;
+}
+
+.totalRatings {
+  font-size: 0.85rem;
+  color: color('text-secondary');
+  opacity: 0.7;
+}
